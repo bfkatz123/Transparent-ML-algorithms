@@ -1,0 +1,4 @@
+# Transparent-ML-algorithms
+## Description
+ML algorithms are designed to reduce error, that is some measure of the difference between the actual and predicted vectors for the target feature.  However, in most cases, the produced model is difficult to interpret.  For example neural networks are non-linear mathematical transformations, and cannot easily be understood.  Decision trees are somewhat easier, but can be difficult to interpret especially when lengthy.  Moreover, both are designed to cover the entire space of the target feature.  This algorithm poses a different question than common machine learning algorithsm (although, ironically, some of the earliest ML algorithms worked closer to this way).  To wit: can you give me an intepretable description that maximally describes some subset of the target population, and minimally describes the non-target population.
+## A brief clarifying example
