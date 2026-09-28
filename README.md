@@ -4,17 +4,19 @@ ML algorithms are designed to reduce error, that is some measure of the differen
 Can you give me an easily intepretable description that maximally describes some subset of the target population, and minimally describes the non-target population.
 ## A few brief clarifying examples
 ### A numerical example
-Problem: In the R dataset mtcars, give me a conjunction of features that describe the top 25% of cars by mpg  
-Answer (with the default matthews metric):  
+Problem: In the R dataset mtcars, give me a conjunction of features that describe the top 25% of cars by mpg 
+Function call: 
+Result (with the default matthews metric):  
 IF  
 a) 1.51 < wt < 2.62, and  
 b) .17 < am < 1  
 THEN  
-mgp is in top 25%  
+mpg is in top 25%  
 The cells in the confusion matrix are tp = 7, fn = 1, tn = 24, and fp = 0.  This produces a score of .9165 with the matthews metric.  
 ### A categorical example  
 Problem: In the R dataset iris, give me a conjunction of features that describe the versicolor species  
-Answer (with the default matthews metric):  
+Function call: 
+Result (with the default matthews metric):  
 IF  
 a) 4.9 < Sepal Length < 7, and  
 b) 3 < Petal Length < 4.73  
@@ -33,4 +35,11 @@ e) If the features in the conjunction are levers (that is, they causally determi
 ## Running the code
 ### Downloading and running
 ### Arguments to the makeprofile function
+dta - the data to analyze, as a data.frame  
+targetname - the name of the column in the data to profile  
+percent [default = .05] - if the target column is numeric, this argument determines the data rows to profile (for example, if percent is .1, then the algorithm will attempt to find a description of the top 10% of target values)  
+top [default = TRUE] - if true, then profile the top n% of cases, otherwise the botton n% of cases  
+targetlevel [default = ''] - if the target column is a factor, profile this factor level  
+maxsd [default = 3]  the maximum standard deviation from the mean for a numeric feature to consider (for example, if maxsd is 2, then only values between -2 and +2 standard deviations from the mean will be considered in the conjunction for this feature  
+
 ### Test cases
