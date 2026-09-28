@@ -4,8 +4,8 @@ ML algorithms are designed to reduce error, that is some measure of the differen
 Can you give me an easily intepretable description that maximally describes some subset of the target population, and minimally describes the non-target population.
 ## A few brief clarifying examples
 ### A numerical example
-Problem: In the R dataset mtcars, give me a conjunction of features that describe the top 25% of cars by mpg 
-Function call: 
+Problem: In the R dataset mtcars, give me a conjunction of features that describe the top 25% of cars by mpg  
+Function call: makeprofile(mtcars,'mpg',.25)  
 Result (with the default matthews metric):  
 IF  
 a) 1.51 < wt < 2.62, and  
@@ -15,7 +15,7 @@ mpg is in top 25%
 The cells in the confusion matrix are tp = 7, fn = 1, tn = 24, and fp = 0.  This produces a score of .9165 with the matthews metric.  
 ### A categorical example  
 Problem: In the R dataset iris, give me a conjunction of features that describe the versicolor species  
-Function call: 
+Function call: makeprofile(iris,'Species',targetlevel = 'versicolor')  
 Result (with the default matthews metric):  
 IF  
 a) 4.9 < Sepal Length < 7, and  
@@ -42,4 +42,5 @@ top [default = TRUE] - if true, then profile the top n% of cases, otherwise the 
 targetlevel [default = ''] - if the target column is a factor, profile this factor level  
 maxsd [default = 3]  the maximum standard deviation from the mean for a numeric feature to consider (for example, if maxsd is 2, then only values between -2 and +2 standard deviations from the mean will be considered in the conjunction for this feature  
 
+### Returns
 ### Test cases
