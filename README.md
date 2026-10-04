@@ -25,12 +25,12 @@ the species is versicolor
 The cells in the confusion matrix are tp = 43, fn = 7, tn = 100, and fp = 0.  This produces a score of .8965 with the matthews metric. 
 
 ## Summary and notes
-As the above examples demonstrate, the algorithm produces a list of conjunctions that describe the specified target region.  Note that  
-a) This algorithm will attempt to find the optimal list of conjunctions relative to the metric provided  
+As the above examples demonstrate, the algorithm produces a conjunction that describe the specified target region.  Note that  
+a) This algorithm will attempt to find the optimal conjunction relative to the measure provided  
 b) The algorithm works with both numerical and factor non-target columns, and numerical and factor target columns  
 c) The algorithm is typically much faster than ML algorithms with the exception of linear regression, but provides a more easily interpretable explanation of the 
 difference between the target and non-target populations than regression and other algorithms  
-d) The performance on the training data as indicated by the metric score is often good compared to standard ML, but may be inferior to these algorithms, especially when a disjunctive representation produces a better result.  However, in these cases, the simpler conjunctive formulation may still be superior because it generalizes better to examples the algorithm has not yet seen.  
+d) The performance on the training data as indicated by the measure score is often good compared to standard ML, but may be inferior to these algorithms, especially when a disjunctive representation produces a better result.  However, in these cases, the simpler conjunctive formulation may still be superior because it generalizes better to examples the algorithm has not yet seen.  
 e) If the features in the conjunction are levers (that is, they causally determine the outcome rather than merely being correlated with it), the output tells directly you what you need to do in order to produce a result in the target range
 ## Running the code
 ### Downloading and running
@@ -52,6 +52,12 @@ sddelta [default = 1] the minimum interval in the maxsd range to consider; the a
 
 beamsize [default = 32] the number of conjunctions to be considered at each step of the iteration, that is, adding an additional feature to each conjunction; the set of conjunctions is filtered at each stage by the given measure, with only the top beamsize surviving
 
+maxfeatures [default = 3] the maximum number of features permitted in the conjunctive solution; the solution will not necessarily have this many however if there is a better evaluation given the provided measure with fewer features
+
+measure [default = 'matthews'] one of accuracy, precision, recall, f1, matthews or weighted; this determines how the algoithm evaluates the relative proportions of true positives, false negatives, true negatives, and false positives in the confusion matrix in the confusion matrix for a given conjunction, and the search process attempts to maximize this value
+
+weight [default = .5] only relevant if measure = weighted, in which case the measures is weight*(tp/(tp + fn)) + (1 - weight)*(tn/(tn + fp)), i.e., a weighted sum of the proportion of positive examples that are correct and the proportion of negative examples that are correct; the weight allows one to emphasize one or the other of these quantities
+
 
 ### makeprofile return
 makeprofile returns a data.frame with one or more rows, each representing a possible solution; all rows have the same evaluation which is the maximum found for these arguments.  Each row contains the number of features in the conjunction, the evaluation by the provided measure, the confusion matrix (true positive count, false negative count, true negative count, and false positive count) and a list of features in the conjunction and their value ranges, or if the feature is a factor, then the level for that factor.  For example, the table below shows that there are two equivalent solutions for iris dataset problem discussed above, one with two features in the conjunction (the third possible feature if filled out with NAs) and one with three.  The maximum possible solutions is limited to the beam size; in most cases there will be far fewer solutions, and often only one.  
@@ -62,3 +68,4 @@ makeprofile returns a data.frame with one or more rows, each representing a poss
 | <h6>3 | <h6>0.896 |    <h6> 43   |     <h6>7   |  <h5>100    |  <h6>  0 | <h6>SepalLength | <h6>4.90  |   <h6> 7  | <h6>SepalWidth   |   <h6>2  |  <h6>3.4|<h5> PetalLength |  <h6>3   |  <h6>4.723  |
 
 ### Test cases
+All test cases are test.R. testnumeric iterates through a number of cases, including an artifical dataset, and varies the percent argument and the measure argument as indicated. testfactor also iterates through a number of cases, although in this case only the measure is varied.  testerror contains all possible errors generated, including errors in specifying the arguments to makeprofile, and runtime errors.
