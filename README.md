@@ -36,11 +36,29 @@ e) If the features in the conjunction are levers (that is, they causally determi
 ### Downloading and running
 ### Arguments to the makeprofile function
 dta - the data to analyze, as a data.frame  
+  
 targetname - the name of the column in the data to profile  
-percent [default = .05] - if the target column is numeric, this argument determines the data rows to profile (for example, if percent is .1, then the algorithm will attempt to find a description of the top 10% of target values)  
+  
+percent [default = .05] - if the target column is numeric, this argument determines the data rows to profile (for example, if percent is .1, then the algorithm will attempt to find a description of the 
+top 10% of target values)  
+
 top [default = TRUE] - if true, then profile the top n% of cases, otherwise the botton n% of cases  
+
 targetlevel [default = ''] - if the target column is a factor, profile this factor level  
+
 maxsd [default = 3]  the maximum standard deviation from the mean for a numeric feature to consider (for example, if maxsd is 2, then only values between -2 and +2 standard deviations from the mean will be considered in the conjunction for this feature  
 
-### Returns
+sddelta [default = 1] the minimum interval in the maxsd range to consider; the algorithm will iterate over all multiples of this interval (for example, with the default values, the following standard deviation intervals will be considered for a given feature: -3 to -2, -3 to -1, -3 to 0, -3 to +1, -3 to +2, -3 to +3, -2 to -1, -2 to 0, -2 to 1, -2 to 2, -2 to 3, -1 to 0, -1 to +1, -1 to + 2, -1 to +3, 0 to +1, 0 to +2, 0 to +3, +1 to +2, +1 to +3, +2 to +3)  
+
+beamsize [default = 32] the number of conjunctions to be considered at each step of the iteration, that is, adding an additional feature to each conjunction; the set of conjunctions is filtered at each stage by the given measure, with only the top beamsize surviving
+
+
+### makeprofile return
+makeprofile returns a data.frame with one or more rows, each representing a possible solution; all rows have the same evaluation which is the maximum found for these arguments.  Each row contains the number of features in the conjunction, the evaluation by the provided measure, the confusion matrix (true positive count, false negative count, true negative count, and false positive count) and a list of features in the conjunction and their value ranges, or if the feature is a factor, then the level for that factor.  For example, the table below shows that there are two equivalent solutions for iris dataset problem discussed above, one with two features in the conjunction (the third possible feature if filled out with NAs) and one with three.  The maximum possible solutions is limited to the beam size; in most cases there will be far fewer solutions, and often only one.  
+
+| <h6>featcount | <h6>eval | <h6>tp | <h6>fn | <h6>tn | <h6>fp | <h6>feat1 | <h6>attr11 | <h6>attr21 | <h6>feat2 | <h6>attr12 | <h6>attr22 | <h6>feat3 | <h6>attr12 | <h6>attr23 |  
+| --------- | ---- |--- | -- |--- | -- | ----- | ------ | ------ | ----- | ------ | ------ | ----- | ------ | ------ |
+| <h6> 2 | <h6> 0.896 | <h6>43 |  <h6>7 |  <h6>100 | <h6>0 | <h6>SepalLength | <h6>4.90 | <h6>7 | <h6>PetalLength | <h6>3 | <h6>4.73 | <h6>NA | <h6>NA | <h6>NA |
+| <h6>3 | <h6>0.896 |    <h6> 43   |     <h6>7   |  <h5>100    |  <h6>  0 | <h6>SepalLength | <h6>4.90  |   <h6> 7  | <h6>SepalWidth   |   <h6>2  |  <h6>3.4|<h5> PetalLength |  <h6>3   |  <h6>4.723  |
+
 ### Test cases
