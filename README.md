@@ -58,6 +58,10 @@ measure [default = 'matthews'] one of accuracy, precision, recall, f1, matthews 
 
 weight [default = .5] only relevant if measure = weighted, in which case the measures is weight*(tp/(tp + fn)) + (1 - weight)*(tn/(tn + fp)), i.e., a weighted sum of the proportion of positive examples that are correct and the proportion of negative examples that are correct; the weight allows one to emphasize one or the other of these quantities
 
+ignorena [default = 'rows'] ignore any row (or column) with an NA in it; regardless of this setting, all rows in the target column with an NA are also ignored  
+
+sigdigits [default = 4] the number of significant digits to include in the output for numeric ranges
+
 
 ### makeprofile return
 makeprofile returns a data.frame with one or more rows, each representing a possible solution; all rows have the same evaluation which is the maximum found for these arguments.  Each row contains the number of features in the conjunction, the evaluation by the provided measure, the confusion matrix (true positive count, false negative count, true negative count, and false positive count) and a list of features in the conjunction and their value ranges, or if the feature is a factor, then the level for that factor.  For example, the table below shows that there are two equivalent solutions for iris dataset problem discussed above, one with two features in the conjunction (the third possible feature if filled out with NAs) and one with three.  The maximum possible solutions is limited to the beam size; in most cases there will be far fewer solutions, and often only one.  
